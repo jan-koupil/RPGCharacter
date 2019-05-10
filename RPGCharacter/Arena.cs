@@ -18,6 +18,12 @@ namespace RPGCharacter
             this._char2 = char2;
             this.reporter = reporter;
             reporter.Report($"The final battle {_char1.Name} vs. {_char2.Name} begins");
+            ReportStatus();
+            reporter.Separator();
+        }
+
+        private void ReportStatus()
+        {
             reporter.Report($"{_char1.Name} has {_char1.HP} hit points, {_char2.Name} has {_char2.HP} hit points");
         }
 
@@ -43,6 +49,9 @@ namespace RPGCharacter
             //utok druheho
             if (defender.IsAlive)
                 Exchange(defender, attacker);
+
+            ReportStatus();
+            reporter.Separator();
         }
 
         // returns 1 if, first wins initiative, else 2
@@ -72,7 +81,8 @@ namespace RPGCharacter
 
         private void Exchange(Character attacker, Character defender)
         {
-            defender.Defence(attacker.AttackRoll());
+            string result = defender.Defence(attacker.AttackRoll());
+            reporter.Report(result);
         }
     }
 }

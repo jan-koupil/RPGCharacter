@@ -13,6 +13,39 @@ namespace RPGCharacter
         public int HP { get; private set; }
         private Dice BattleDice;
         private Dice InitiativeDice;
+        public Equipable RightHand { get; private set; }
+        public Equipable LeftHand { get; private set; }
+
+        private int DefenceBase
+        {
+            get {
+                if (LeftHand == null || !(LeftHand is Shield))
+                    return 0;
+                else
+                    return ((Shield)LeftHand).Defence; }
+        }
+
+        private int AttackBase
+        {
+            get
+            {
+                if (RightHand == null || !( RightHand is Weapon))
+                    return 0;
+                else
+                    return ((Weapon)RightHand).Attack;
+            }
+        }
+
+        private int DamageBase
+        {
+            get
+            {
+                if (RightHand == null || !(RightHand is Weapon))
+                    return 0;
+                else
+                    return ((Weapon)RightHand).Damage;
+            }
+        }
 
         public bool IsAlive
         {
@@ -37,7 +70,7 @@ namespace RPGCharacter
         }
         public int AttackRoll()
         {
-            return this.BattleDice.Throw();
+            return this.BattleDice.Throw() + AttackBase;
         }
         private int DefenceRoll()
         {
@@ -45,7 +78,7 @@ namespace RPGCharacter
         }
         public string Defence(int attackRoll)
         {
-            int defenceRoll = DefenceRoll();
+            int defenceRoll = DefenceRoll() + DefenceBase;
             // porovná attack a defence
             if (attackRoll > defenceRoll)
             {
@@ -60,6 +93,37 @@ namespace RPGCharacter
             {
                 return $"{Name} avoids the attack.";
             }
+        }
+
+        public bool Equip(Equipable item)
+        {
+            // když je v pravé obouručka, nelze
+            if (RightHand != null && RightHand.TwoHanded)
+                return false;
+
+            // když není ruka prázdná, nelze
+            // když beru zbraň, pak do pravé
+            if (item is Weapon)
+            {
+                if (RightHand == null)
+                {
+                    RightHand = item;
+                    return true;
+                }
+            }
+            // když beru štít, pak do levé
+            else if (item is Shield)
+            {
+                // když je obouruční a nejsou prázdné obě, nelze
+                if (LeftHand == null)
+                {
+                    LeftHand = item;
+                    return true;
+                }
+            }
+
+            return false; // nastalo něco, kdy nelze vybavit            
+
         }
 
     }

@@ -12,5 +12,10 @@ namespace RPGCharacter
         {
             Console.WriteLine(message);
         }
+
+        public void Separator()
+        {
+            Console.WriteLine();
+        }
     }
 }

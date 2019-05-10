@@ -9,5 +9,6 @@ namespace RPGCharacter
     interface IReporter
     {
         void Report(string message);
+        void Separator();
     }
 }
