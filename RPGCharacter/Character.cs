@@ -25,25 +25,20 @@ namespace RPGCharacter
                     return ((Shield)LeftHand).Defence; }
         }
 
-        private int AttackBase
+        private AttackData AttackBase
         {
             get
             {
-                if (RightHand == null || !( RightHand is Weapon))
-                    return 0;
-                else
-                    return ((Weapon)RightHand).Attack;
-            }
-        }
+                AttackData result = new AttackData();
 
-        private int DamageBase
-        {
-            get
-            {
-                if (RightHand == null || !(RightHand is Weapon))
-                    return 0;
+                if (RightHand == null || !( RightHand is Weapon))
+                    return result;
                 else
-                    return ((Weapon)RightHand).Damage;
+                {
+                    result.Attack = ((Weapon)RightHand).Attack;
+                    result.Damage = ((Weapon)RightHand).Damage;
+                    return result;
+                }
             }
         }
 
@@ -68,22 +63,25 @@ namespace RPGCharacter
         {
             return this.InitiativeDice.Throw();
         }
-        public int AttackRoll()
+        public AttackData AttackRoll()
         {
-            return this.BattleDice.Throw() + AttackBase;
+            AttackData result = this.AttackBase;
+            result.Attack += this.BattleDice.Throw();
+            return result;
         }
         private int DefenceRoll()
         {
             return this.BattleDice.Throw();
         }
-        public string Defence(int attackRoll)
+        public string Defence(AttackData attackRoll)
         {
             int defenceRoll = DefenceRoll() + DefenceBase;
             // porovná attack a defence
-            if (attackRoll > defenceRoll)
+            if (attackRoll.Attack > defenceRoll)
             {
                 // případně odmaže životy
-                int dmg = attackRoll - defenceRoll;
+                int dmg = attackRoll.Attack - defenceRoll + attackRoll.Damage;
+                dmg = Math.Max(dmg, 1);
                 dmg = Math.Min(dmg, HP);
                 HP -= dmg;
                 // nedovolí pokles pod nula
@@ -124,6 +122,11 @@ namespace RPGCharacter
 
             return false; // nastalo něco, kdy nelze vybavit            
 
+        }
+
+        public void Rejuvenate()
+        {
+            this.HP = this.MaxHP;
         }
 
     }

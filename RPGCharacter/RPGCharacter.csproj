@@ -44,16 +44,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arena.cs" />
+    <Compile Include="AttackData.cs" />
     <Compile Include="Character.cs" />
-    <Compile Include="ConsoleReporter.cs" />
+    <Compile Include="Reporter\BlackHoleReporter.cs" />
+    <Compile Include="Reporter\ConsoleReporter.cs" />
     <Compile Include="Dice.cs" />
-    <Compile Include="Equipable.cs" />
-    <Compile Include="IReporter.cs" />
-    <Compile Include="Item.cs" />
+    <Compile Include="Equipment\Equipable.cs" />
+    <Compile Include="Reporter\IReporter.cs" />
+    <Compile Include="Equipment\Item.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Shield.cs" />
-    <Compile Include="Weapon.cs" />
+    <Compile Include="Equipment\Shield.cs" />
+    <Compile Include="Equipment\Weapon.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

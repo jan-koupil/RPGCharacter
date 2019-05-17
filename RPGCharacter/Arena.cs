@@ -12,6 +12,17 @@ namespace RPGCharacter
         Character _char2;
         IReporter reporter;
 
+        public Character Winner
+        {
+            get
+            {
+                if (_char1.IsAlive && _char2.IsAlive)
+                    return null;
+
+                return _char1.IsAlive ? _char1 : _char2; 
+            }
+        }
+
         public Arena(Character char1, Character char2, IReporter reporter)
         {
             this._char1 = char1;
@@ -83,6 +94,12 @@ namespace RPGCharacter
         {
             string result = defender.Defence(attacker.AttackRoll());
             reporter.Report(result);
+        }
+
+        public void Restart()
+        {
+            _char1.Rejuvenate();
+            _char2.Rejuvenate();
         }
     }
 }
